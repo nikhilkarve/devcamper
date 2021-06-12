@@ -4,9 +4,13 @@
   "description": "Dev Camper Backend API",
   "main": "server.js",
   "dependencies": {
+    "colors": "^1.4.0",
     "dotenv": "^10.0.0",
     "express": "^4.17.1",
-    "morgan": "^1.10.0"
+    "mongoose": "^5.12.13",
+    "morgan": "^1.10.0",
+    "node-geocoder": "^3.27.0",
+    "slugify": "^1.5.3"
   },
   "devDependencies": {},
   "scripts": {
