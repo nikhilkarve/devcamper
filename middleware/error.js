@@ -1,30 +1,35 @@
 const ErrorResponse = require("../utils/errorResponse");
 
 const errorHandler = (err, req, res, next) => {
-  console.log(err.stack.red);
+  let error = { ...err };
 
-  // Mongoose invalid id error
+  error.message = err.message;
+
+  // Log to console for dev
+  console.log(err);
+
+  // Mongoose bad ObjectId
   if (err.name === "CastError") {
-    const message = `Bootcamp not found with the ID: ${err.value}`;
+    const message = `Resource not found`;
     error = new ErrorResponse(message, 404);
   }
 
-  // Mongoose duplicate details error
-  //   console.log(err);
+  // Mongoose duplicate key
   if (err.code === 11000) {
-    const message = `Duplicate bootcamp entry`;
+    const message = "Duplicate field value entered";
     error = new ErrorResponse(message, 400);
   }
 
-  //Mongoose incomplete data entry
+  // Mongoose validation error
   if (err.name === "ValidationError") {
     const message = Object.values(err.errors).map((val) => val.message);
     error = new ErrorResponse(message, 400);
   }
 
-  res
-    .status(error.statusCode || 500)
-    .json({ success: false, error: error.message || "Server Error" });
+  res.status(error.statusCode || 500).json({
+    success: false,
+    error: error.message || "Server Error",
+  });
 };
 
 module.exports = errorHandler;
